@@ -2,6 +2,7 @@
 import flatpickr from "flatpickr";
 // Додатковий імпорт стилів
 import "flatpickr/dist/flatpickr.min.css";
+import Notiflix from 'notiflix';
 
 const refs = {
   startBtn: document.querySelector('button[data-start]'),
@@ -10,20 +11,53 @@ const refs = {
 };
 
 // console.log(refs.clockface);
-// const currentTime = Date.now()
-// const q = selectedDates
+
 const options = {
     enableTime: true,
     time_24hr: true,
     defaultDate: new Date(),
     minuteIncrement: 1,
     onClose(selectedDates) {
-    console.log(q[0]);
+      let intervalId = null;
+      const currentTime = Date.now()
+
+      if (selectedDates[0] < currentTime) {
+        Notiflix.Notify.failure('Please choose a date in the future');
+} else(refs.startBtn.disabled = true)
+
+    console.log(selectedDates[0]);
     },
   };
 
- 
-console.log(options.onClose(selectedDates[0]));
+  // onClose(selectedDates) {
+  //   let intervalId = null;
+  //   const currentTime = Date.now();
+
+  //   if (selectedDates[0] < currentTime) {
+  //     Notiflix.Notify.failure('Please choose a date in the future');
+  //   }
+  
+  //   intervalId = setInterval(() => {
+  //     const inputTime = selectedDates[0].getTime() - Date.now();
+
+  //     const time = convertMs(inputTime);
+
+  //     // Проверка если разница между текущей датой и выбранной меньше 0, то в textContent рефов присваивается 00
+  //     if (inputTime < 0) {
+  //       return;
+  //     } else {
+  //       const { days, hours, minutes, seconds } = time;
+  //       refs.days.textContent = `${days}`;
+  //       refs.hours.textContent = `${hours}`;
+  //       refs.minutes.textContent = `${minutes}`;
+  //       refs.seconds.textContent = `${seconds}`;
+  //     }
+
+  //     if (time === 0) {
+  //       clearInterval(intervalId);
+  //     }
+  //   }, 1000);
+  // },
 
 flatpickr(refs.myInput, options);
      
@@ -55,14 +89,14 @@ function updateClockface({ days, hours, minutes, seconds}) {
 }
 
 
-function renderingTime() {  const delta = selecktedTime - new Date();  
-  const { days, hours, minutes, seconds } = convertMs(delta);  
-  if (seconds < 0) 
-  { return;}
-  getEl('[data-days]').textContent = days;
-    getEl('[data-hours]').textContent = hours;
-      getEl('[data-minutes]').textContent = minutes;
-        getEl('[data-seconds]').textContent = seconds;}
+// function renderingTime() {  const delta = selecktedTime - new Date();  
+//   const { days, hours, minutes, seconds } = convertMs(delta);  
+//   if (seconds < 0) 
+//   { return;}
+//   getEl('[data-days]').textContent = days;
+//     getEl('[data-hours]').textContent = hours;
+//       getEl('[data-minutes]').textContent = minutes;
+//         getEl('[data-seconds]').textContent = seconds;}
 
 // currentTime  = Date.now
 // currentTime-startTime >=0
