@@ -10,6 +10,21 @@ const refs = {
   clockface: document.querySelector('.timer') 
 };
 
+const timer = {
+  start() {
+    const startTime = Date.now();
+
+    setInterval(() => {
+       const currentTime = Date.now();
+       const deltaTime = currentTime - startTime;
+       const timeComponents = convertMs(deltaTime)
+       console.log(timeComponents);
+    }, 1000);
+
+  },
+};
+timer.start ()
+
 // console.log(refs.clockface);
 
 const options = {
@@ -18,7 +33,7 @@ const options = {
     defaultDate: new Date(),
     minuteIncrement: 1,
     onClose(selectedDates) {
-      let intervalId = null;
+      let intervalId = null
       const currentTime = Date.now()
 
       if (selectedDates[0] < currentTime) {
@@ -61,9 +76,6 @@ const options = {
 
 flatpickr(refs.myInput, options);
      
-// if (currentTime<startTime){
-//   window.alert("Please choose a date in the future")
-// } else(refs.startBtn.disabled = true)
 
 function convertMs(ms) {
   // Number of milliseconds per unit of time
@@ -88,26 +100,6 @@ function updateClockface({ days, hours, minutes, seconds}) {
   refs.clockface.textContent = `${days}:${hours}:${minutes}:${seconds}`;
 }
 
-
-// function renderingTime() {  const delta = selecktedTime - new Date();  
-//   const { days, hours, minutes, seconds } = convertMs(delta);  
-//   if (seconds < 0) 
-//   { return;}
-//   getEl('[data-days]').textContent = days;
-//     getEl('[data-hours]').textContent = hours;
-//       getEl('[data-minutes]').textContent = minutes;
-//         getEl('[data-seconds]').textContent = seconds;}
-
-// currentTime  = Date.now
-// currentTime-startTime >=0
-
-
-  /*
-   * Принимает число, приводит к строке и добавляет в начало 0 если число меньше 2-х знаков
-   */
-  // pad(value) {
-  //   return String(value).padStart(2, '0');
-  // }
 
 
   // const refs = {
