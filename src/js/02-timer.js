@@ -11,7 +11,7 @@ const refs = {
 };
 
 
-// let timerDeadline = null;
+let timerDeadline = null;
 
 const timer ={
  intervalId: null,
@@ -38,6 +38,7 @@ start(rootSelector, timerDeadline) {
     }
 },
   }
+  flatpickr(timerDeadline, options);
 
 this.getRefs(rootSelector);
 
@@ -58,18 +59,22 @@ this.intervalId = setInterval(() => {
   },
 
   getRefs(rootSelector) {
-  
-    this.refs.days = rootSelector.querySelector('.js-timer__days');
-    this.refs.hours = rootSelector.querySelector('.js-timer__hours');
-    this.refs.minutes = rootSelector.querySelector('.js-timer__minutes');
-    this.refs.seconds = rootSelector.querySelector('.js-timer__seconds');
+    this.refs.days = rootSelector.querySelector('[data-days]');
+    this.refs.hours = rootSelector.querySelector('[data-hours]');
+    this.refs.minutes = rootSelector.querySelector('[data-minutes]');
+    this.refs.seconds = rootSelector.querySelector('[data-seconds]');
   },
   convertMs(diff) {
-    const days = Math.floor(diff / 1000 / 60 / 60 / 24);
-    const hours = Math.floor(diff / 1000 / 60 / 60) % 24;
-    const minutes = Math.floor(diff / 1000 / 60) % 60;
-    const seconds = Math.floor(diff / 1000) % 60;
-    return { days, hours, minutes, seconds };
+  const second = 1000;
+  const minute = second * 60;
+  const hour = minute * 60;
+  const day = hour * 24;
+
+  const days = Math.floor(ms / day);
+  const hours = Math.floor((ms % day) / hour);
+  const minutes = Math.floor(((ms % day) % hour) / minute);
+  const seconds = Math.floor((((ms % day) % hour) % minute) / second);
+  return { days, hours, minutes, seconds };
   },
 
   addLeadinZero(value) {
@@ -79,9 +84,7 @@ this.intervalId = setInterval(() => {
 
 
 
-// refs.startBtn.addEventListener ('click', () =>{
-//   timer.start();
-// });
+
 
 
 
