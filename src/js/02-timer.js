@@ -10,8 +10,7 @@ const refs = {
   timerRef: document.querySelector('.timer'), 
 };
 
-
-let timerDeadline = null;
+const timerDeadline = null;
 
 const options = {
   enableTime: true,
@@ -32,7 +31,8 @@ const options = {
   }
 },
 };
-flatpickr(timerDeadline, options);
+flatpickr(refs.myInput, options);
+
 
 const timer ={
  intervalId: null,
@@ -40,38 +40,19 @@ const timer ={
  refs: {},
 
 start(rootSelector, timerDeadline) {
-//   const options = {
-//     enableTime: true,
-//     time_24hr: true,
-//     defaultDate: new Date(),
-//     minuteIncrement: 1,
-
-//     onClose(selectedDates) {
-//       console.log(selectedDates[0]);
-//       timerDeadline = selectedDates[0].getTime();
-//       const delta = timerDeadline - Date.now();
-//       if (delta <= 0 ) {
-//         Notiflix.Notify.failure('Please choose a date in the future');
-//                 refs.startBtn.disabled = true;
-//         return;
-//     } else {
-//       refs.startBtn.disabled = false;;
-//     }
-// },
-//   }
-//   flatpickr(timerDeadline, options);
+  const delta = timerDeadline - Date.now();
+console.log(delta);
 
 this.getRefs(rootSelector);
 
 this.intervalId = setInterval(() => {
   const diff = timerDeadline - Date.now();
-
+console.log(diff);
   if (diff <= 1000) {
     clearInterval(this.intervalId);
   }
-
   const data = this.convertMs(diff);
-  
+
   this.refs.days.textContent = this.addLeadinZero(data.days);
   this.refs.hours.textContent = this.addLeadinZero(data.hours);
   this.refs.minutes.textContent = this.addLeadinZero(data.minutes);
@@ -85,7 +66,7 @@ this.intervalId = setInterval(() => {
     this.refs.minutes = rootSelector.querySelector('[data-minutes]');
     this.refs.seconds = rootSelector.querySelector('[data-seconds]');
   },
-  convertMs(diff) {
+  convertMs(ms) {
   const second = 1000;
   const minute = second * 60;
   const hour = minute * 60;
@@ -103,6 +84,8 @@ this.intervalId = setInterval(() => {
   },
 };
 
+timer.start(refs.timerRef, timerDeadline)
+refs.startBtn.addEventListener('click', timer.start)
 
 
 
