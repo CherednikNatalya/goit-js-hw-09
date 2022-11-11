@@ -30,6 +30,7 @@ const timer = {
       return;
     }
     Notify.success('Відлік почався', this.notifyOptions);
+    
     this.getRefs(rootSelector);
     this.intervalId = setInterval(() => {
       const diff = deadline.getTime() - Date.now();

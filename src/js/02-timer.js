@@ -11,34 +11,7 @@ const refs = {
 };
 
 
-let timerDeadline = null;
-
-const options = {
-    enableTime: true,
-    time_24hr: true,
-    defaultDate: new Date(),
-    minuteIncrement: 1,
-    onClose(selectedDates) {
-      console.log(selectedDates[0]);
-      timerDeadline = selectedDates[0].getTime();
-      const delta = timerDeadline - Date.now();
-      if (delta <= 0 ) {
-        Notiflix.Notify.failure('Please choose a date in the future');
-        // refs.startBtn.setAttribute('disable', false);
-        refs.startBtn.disabled = true;
-        return;
-    } else {
-      refs.startBtn.disabled = false;;
-    }
-},
-};
-console.log(options.onClose);
-
-flatpickr(refs.myInput, options);
-
-refs.startBtn.addEventListener ('click', () =>{
-  timer.start();
-});
+// let timerDeadline = null;
 
 const timer ={
  intervalId: null,
@@ -46,49 +19,63 @@ const timer ={
  refs: {},
 
 start(rootSelector, timerDeadline) {
+  const options = {
+    enableTime: true,
+    time_24hr: true,
+    defaultDate: new Date(),
+    minuteIncrement: 1,
+
+    onClose(selectedDates) {
+      console.log(selectedDates[0]);
+      timerDeadline = selectedDates[0].getTime();
+      const delta = timerDeadline - Date.now();
+      if (delta <= 0 ) {
+        Notiflix.Notify.failure('Please choose a date in the future');
+                refs.startBtn.disabled = true;
+        return;
+    } else {
+      refs.startBtn.disabled = false;;
+    }
+},
+  }
+
+this.getRefs(rootSelector);
+
+this.intervalId = setInterval(() => {
+  const diff = timerDeadline - Date.now();
+
+  if (diff <= 1000) {
+    clearInterval(this.intervalId);
+  }
+
+  const data = this.convertMs(diff);
+  
+  this.refs.days.textContent = this.addLeadinZero(data.days);
+  this.refs.hours.textContent = this.addLeadinZero(data.hours);
+  this.refs.minutes.textContent = this.addLeadinZero(data.minutes);
+  this.refs.seconds.textContent = this.addLeadinZero(data.seconds);
+}, 1000);
+  },
 
   getRefs(rootSelector) {
-    this.refs.days = rootSelector.querySelector('[data-days]');
-    this.refs.hours = rootSelector.querySelector('[data-hours]');
-    this.refs.minutes = rootSelector.querySelector('[data-minutes]');
-    this.refs.seconds = rootSelector.querySelector('[data-seconds]');
-  };
-
-convertMs(ms) {
-    // Number of milliseconds per unit of time
-    const second = 1000;
-    const minute = second * 60;
-    const hour = minute * 60;
-    const day = hour * 24;
   
-    // Remaining days
-    const days = Math.floor(ms / day);
-    // Remaining hours
-    const hours = Math.floor((ms % day) / hour);
-    // Remaining minutes
-    const minutes = Math.floor(((ms % day) % hour) / minute);
-    // Remaining seconds
-    const seconds = Math.floor((((ms % day) % hour) % minute) / second);
-  
+    this.refs.days = rootSelector.querySelector('.js-timer__days');
+    this.refs.hours = rootSelector.querySelector('.js-timer__hours');
+    this.refs.minutes = rootSelector.querySelector('.js-timer__minutes');
+    this.refs.seconds = rootSelector.querySelector('.js-timer__seconds');
+  },
+  convertMs(diff) {
+    const days = Math.floor(diff / 1000 / 60 / 60 / 24);
+    const hours = Math.floor(diff / 1000 / 60 / 60) % 24;
+    const minutes = Math.floor(diff / 1000 / 60) % 60;
+    const seconds = Math.floor(diff / 1000) % 60;
     return { days, hours, minutes, seconds };
   },
-  
-},
+
+  addLeadinZero(value) {
+    return String(value).padStart(2, '0');
+  },
 };
-
-timer.start(refs.timerRef, timerDeadline)
-
-
-
-function updateClockface({ days, hours, minutes, seconds}) {
-  refs.clockface.textContent = `${days}:${hours}:${minutes}:${seconds}`;
-}
-
-
-
-
-
-
 
 
 
@@ -97,139 +84,4 @@ function updateClockface({ days, hours, minutes, seconds}) {
 // });
 
 
-// const timer = {
-//   isActive: false,
-//   start() {
-//     if (this.isActive) {
-//       return;
-//     }
-//     this.isActive = true;
-//   },
-// };
 
-
-
-// const timer = {
-//   start() {
-//     const startTime = Date.now();
-
-//     setInterval(() => {
-//        const currentTime = Date.now();
-//        const deltaTime = currentTime - startTime;
-//        const timeComponents = convertMs(deltaTime)
-//       //  console.log(timeComponents);
-//       const time = updateClockface
-       
-//     }, 1000);
-
-//   },
-// };
-// timer.start ()
-// else(refs.startBtn.disabled = true)
-
-// const options = {
-//     enableTime: true,
-//     time_24hr: true,
-//     defaultDate: new Date(),
-//     minuteIncrement: 1,
-
-//     // onClose(selectedDates) {
-//     //   console.log(selectedDates[0]);
-//     //   numberSelectedDates = selectedDates[0].getTime();
-
-
-//     onClose(selectedDates) {
-//       let intervalId = null
-//       const currentTime = Date.now()
-
-//       if (selectedDates[0] < currentTime) {
-//         Notiflix.Notify.failure('Please choose a date in the future');
-// } 
-
-// intervalId = setInterval(() => {
-//   const inputTime = selectedDates[0].getTime() - Date.now();
-//   const time = convertMs(inputTime);
-
-//   if (inputTime < 0) {
-//     return;
-//   } else {
-//     refs.days.textContent = `${days}`;
-//     refs.hours.textContent = `${hours}`;
-//     refs.minutes.textContent = `${minutes}`;
-//     refs.seconds.textContent = `${seconds}`;
-//   }
-//   if (time === 0) {
-//     clearInterval(intervalId);
-//   };
-// }, 1000);
-   
-//     },
-//   };
-
-// flatpickr(refs.myInput, options);
-     
-
-// function convertMs(ms) {
-//   // Number of milliseconds per unit of time
-//   const second = 1000;
-//   const minute = second * 60;
-//   const hour = minute * 60;
-//   const day = hour * 24;
-
-//   // Remaining days
-//   const days = Math.floor(ms / day);
-//   // Remaining hours
-//   const hours = Math.floor((ms % day) / hour);
-//   // Remaining minutes
-//   const minutes = Math.floor(((ms % day) % hour) / minute);
-//   // Remaining seconds
-//   const seconds = Math.floor((((ms % day) % hour) % minute) / second);
-
-//   return { days, hours, minutes, seconds };
-// }
-
-// function updateClockface({ days, hours, minutes, seconds}) {
-//   refs.clockface.textContent = `${days}:${hours}:${minutes}:${seconds}`;
-// }
-
-
-
-// let timerId = setInterval(() => {
-//   const currentTime = Date.now();
-//   //console.log('currentTime', currentTime);
-//   const deltaTime = startTime - currentTime;
-//   //console.log('deltaTime',deltaTime);
-//   const time = convertMs(deltaTime);
-//   refs.days.textContent = time.days;
-//   refs.hours.textContent = time.hours;
-//   refs.minutes.textContent = time.minutes;
-//   refs.seconds.textContent = time.seconds;
-//   if (deltaTime <= 0) {
-//     clearInterval(timerId);
-//     return;
-//   }
-// }, 1000);
-
-// refs.startBtn.addEventListener('click', onStart);
-// function onStart() {
-//   refs.startBtn.disabled = true;
-//   const startTime = dataPickr.selectedDates[0];
-//   //console.log('startTime',startTime);
-//   let timerId = setInterval(() => {
-//     const currentTime = Date.now();
-//     //console.log('currentTime', currentTime);
-//     const deltaTime = startTime - currentTime;
-//     //console.log('deltaTime',deltaTime);
-//     const time = convertMs(deltaTime);
-//     refs.days.textContent = time.days;
-//     refs.hours.textContent = time.hours;
-//     refs.minutes.textContent = time.minutes;
-//     refs.seconds.textContent = time.seconds;
-//     if (deltaTime <= 0) {
-//       clearInterval(timerId);
-//       return;
-//     }
-//   }, 1000);
-// function addPrevSymbol(value) {
-//   return String(value).padStart(2, '0');
-// }
