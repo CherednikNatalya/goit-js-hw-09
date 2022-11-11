@@ -21,9 +21,18 @@ const options = {
     onClose(selectedDates) {
       console.log(selectedDates[0]);
       timerDeadline = selectedDates[0].getTime();
+      const delta = timerDeadline - Date.now();
+      if (delta <= 0 ) {
+        Notiflix.Notify.failure('Please choose a date in the future');
+        // refs.startBtn.setAttribute('disable', false);
+        refs.startBtn.disabled = true;
+        return;
+    } else {
+      refs.startBtn.disabled = false;;
+    }
 },
 };
-console.log(options.onClose.timerDeadline);
+console.log(options.onClose);
 
 flatpickr(refs.myInput, options);
 
@@ -35,24 +44,48 @@ const timer ={
  intervalId: null,
 
 refs : {
-  // days: document.querySelector('[data-days]'), 
-  // hours: document.querySelector('[data-hours]'),
-  // minutes: document.querySelector('[data-minutes]'),
-  // seconds: document.querySelector('[data-seconds]') ,
+  days: document.querySelector('[data-days]'), 
+  hours: document.querySelector('[data-hours]'),
+  minutes: document.querySelector('[data-minutes]'),
+  seconds: document.querySelector('[data-seconds]') ,
 },
 
 start(rootSelector, timerDeadline) {
-  const delta = timerDeadline - Date.now();
-  if (delta <=0 ) {
-    Notiflix.Notify.failure('Please choose a date in the future');
-    refs.startBtn.setAttribute('disable', false);
-} else {
-refs.startBtn.toggleAttribute('disable');
-}
-console.log(options.timerDeadline);
-console.log(Date.now());
-console.log(rootSelector);
-console.log(delta);
+
+  getRefs(rootSelector) {
+    this.refs.days = rootSelector.querySelector('[data-days]');
+    this.refs.hours = rootSelector.querySelector('[data-hours]');
+    this.refs.minutes = rootSelector.querySelector('[data-minutes]');
+    this.refs.seconds = rootSelector.querySelector('[data-seconds]');
+  };
+
+
+  function convertMs(ms) {
+    // Number of milliseconds per unit of time
+    const second = 1000;
+    const minute = second * 60;
+    const hour = minute * 60;
+    const day = hour * 24;
+  
+    // Remaining days
+    const days = Math.floor(ms / day);
+    // Remaining hours
+    const hours = Math.floor((ms % day) / hour);
+    // Remaining minutes
+    const minutes = Math.floor(((ms % day) % hour) / minute);
+    // Remaining seconds
+    const seconds = Math.floor((((ms % day) % hour) % minute) / second);
+  
+    return { days, hours, minutes, seconds };
+  }
+  
+
+
+},
+
+// console.log(Date.now());
+// console.log(rootSelector);
+// console.log(delta);
 
   // const timeDeadline = new Date();
   // this.intervalId = setInterval(() => {
@@ -74,30 +107,12 @@ console.log(delta);
   //   };
   // }, 1000);
 
-}
+};
 
-}
+
 timer.start(refs.timerRef, timerDeadline)
 
 
-function convertMs(ms) {
-  // Number of milliseconds per unit of time
-  const second = 1000;
-  const minute = second * 60;
-  const hour = minute * 60;
-  const day = hour * 24;
-
-  // Remaining days
-  const days = Math.floor(ms / day);
-  // Remaining hours
-  const hours = Math.floor((ms % day) / hour);
-  // Remaining minutes
-  const minutes = Math.floor(((ms % day) % hour) / minute);
-  // Remaining seconds
-  const seconds = Math.floor((((ms % day) % hour) % minute) / second);
-
-  return { days, hours, minutes, seconds };
-}
 
 function updateClockface({ days, hours, minutes, seconds}) {
   refs.clockface.textContent = `${days}:${hours}:${minutes}:${seconds}`;
