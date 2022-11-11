@@ -20,11 +20,12 @@ const options = {
     minuteIncrement: 1,
     onClose(selectedDates) {
       console.log(selectedDates[0]);
-      const timerDeadline = selectedDates[0].getTime();
+      timerDeadline = selectedDates[0].getTime();
 },
 };
-console.log(timerDeadline);
-console.log(flatpickr(refs.myInput, options));
+console.log(options.onClose.timerDeadline);
+
+flatpickr(refs.myInput, options);
 
 refs.startBtn.addEventListener ('click', () =>{
   timer.start();
@@ -41,15 +42,17 @@ refs : {
 },
 
 start(rootSelector, timerDeadline) {
-  const timerDeadline = selectedDates[0].getTime();
-  if (timerDeadline < Date.now()) {
+  const delta = timerDeadline - Date.now();
+  if (delta <=0 ) {
     Notiflix.Notify.failure('Please choose a date in the future');
     refs.startBtn.setAttribute('disable', false);
 } else {
 refs.startBtn.toggleAttribute('disable');
 }
+console.log(options.timerDeadline);
+console.log(Date.now());
 console.log(rootSelector);
-console.log(timerDeadline);
+console.log(delta);
 
   // const timeDeadline = new Date();
   // this.intervalId = setInterval(() => {
