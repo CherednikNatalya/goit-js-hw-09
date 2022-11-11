@@ -43,12 +43,7 @@ refs.startBtn.addEventListener ('click', () =>{
 const timer ={
  intervalId: null,
 
-refs : {
-  // days: document.querySelector('[data-days]'), 
-  // hours: document.querySelector('[data-hours]'),
-  // minutes: document.querySelector('[data-minutes]'),
-  // seconds: document.querySelector('[data-seconds]') ,
-},
+ refs: {},
 
 start(rootSelector, timerDeadline) {
 
@@ -59,8 +54,7 @@ start(rootSelector, timerDeadline) {
     this.refs.seconds = rootSelector.querySelector('[data-seconds]');
   };
 
-
-  function convertMs(ms) {
+convertMs(ms) {
     // Number of milliseconds per unit of time
     const second = 1000;
     const minute = second * 60;
@@ -77,38 +71,10 @@ start(rootSelector, timerDeadline) {
     const seconds = Math.floor((((ms % day) % hour) % minute) / second);
   
     return { days, hours, minutes, seconds };
-  }
+  },
   
-
-
 },
-
-// console.log(Date.now());
-// console.log(rootSelector);
-// console.log(delta);
-
-  // const timeDeadline = new Date();
-  // this.intervalId = setInterval(() => {
-  //   const startTime = timeDeadline - Date.now();
-  //   const timeComponents = convertMs(startTime)
-
-  //   const time = convertMs(inputTime);
-  
-  //   if (inputTime < 0) {
-  //     return;
-  //   } else {
-  //     refs.days.textContent = `${days}`;
-  //     refs.hours.textContent = `${hours}`;
-  //     refs.minutes.textContent = `${minutes}`;
-  //     refs.seconds.textContent = `${seconds}`;
-  //   }
-  //   if (time === 0) {
-  //     clearInterval(intervalId);
-  //   };
-  // }, 1000);
-
 };
-
 
 timer.start(refs.timerRef, timerDeadline)
 

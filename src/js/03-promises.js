@@ -92,3 +92,29 @@ const interval3 = setInterval(function () {
 console.log(interval1);
 console.log(interval3);
 console.log(interval2);
+
+
+
+// console.log(Date.now());
+// console.log(rootSelector);
+// console.log(delta);
+
+  // const timeDeadline = new Date();
+  // this.intervalId = setInterval(() => {
+  //   const startTime = timeDeadline - Date.now();
+  //   const timeComponents = convertMs(startTime)
+
+  //   const time = convertMs(inputTime);
+  
+  //   if (inputTime < 0) {
+  //     return;
+  //   } else {
+  //     refs.days.textContent = `${days}`;
+  //     refs.hours.textContent = `${hours}`;
+  //     refs.minutes.textContent = `${minutes}`;
+  //     refs.seconds.textContent = `${seconds}`;
+  //   }
+  //   if (time === 0) {
+  //     clearInterval(intervalId);
+  //   };
+  // }, 1000);
