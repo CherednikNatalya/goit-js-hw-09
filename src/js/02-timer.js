@@ -28,10 +28,10 @@ const options = {
               refs.startBtn.disabled = true;
       return;
   } else {
-    refs.startBtn.disabled = false;;
+    refs.startBtn.disabled = false;
   }
 },
-}
+};
 flatpickr(timerDeadline, options);
 
 const timer ={
