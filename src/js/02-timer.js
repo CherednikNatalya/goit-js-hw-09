@@ -13,32 +13,53 @@ const refs = {
 
 let timerDeadline = null;
 
+const options = {
+  enableTime: true,
+  time_24hr: true,
+  defaultDate: new Date(),
+  minuteIncrement: 1,
+
+  onClose(selectedDates) {
+    console.log(selectedDates[0]);
+    timerDeadline = selectedDates[0].getTime();
+    const delta = timerDeadline - Date.now();
+    if (delta <= 0 ) {
+      Notiflix.Notify.failure('Please choose a date in the future');
+              refs.startBtn.disabled = true;
+      return;
+  } else {
+    refs.startBtn.disabled = false;;
+  }
+},
+}
+flatpickr(timerDeadline, options);
+
 const timer ={
  intervalId: null,
 
  refs: {},
 
 start(rootSelector, timerDeadline) {
-  const options = {
-    enableTime: true,
-    time_24hr: true,
-    defaultDate: new Date(),
-    minuteIncrement: 1,
+//   const options = {
+//     enableTime: true,
+//     time_24hr: true,
+//     defaultDate: new Date(),
+//     minuteIncrement: 1,
 
-    onClose(selectedDates) {
-      console.log(selectedDates[0]);
-      timerDeadline = selectedDates[0].getTime();
-      const delta = timerDeadline - Date.now();
-      if (delta <= 0 ) {
-        Notiflix.Notify.failure('Please choose a date in the future');
-                refs.startBtn.disabled = true;
-        return;
-    } else {
-      refs.startBtn.disabled = false;;
-    }
-},
-  }
-  flatpickr(timerDeadline, options);
+//     onClose(selectedDates) {
+//       console.log(selectedDates[0]);
+//       timerDeadline = selectedDates[0].getTime();
+//       const delta = timerDeadline - Date.now();
+//       if (delta <= 0 ) {
+//         Notiflix.Notify.failure('Please choose a date in the future');
+//                 refs.startBtn.disabled = true;
+//         return;
+//     } else {
+//       refs.startBtn.disabled = false;;
+//     }
+// },
+//   }
+//   flatpickr(timerDeadline, options);
 
 this.getRefs(rootSelector);
 
