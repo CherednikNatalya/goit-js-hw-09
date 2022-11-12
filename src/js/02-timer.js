@@ -84,8 +84,7 @@ console.log(diff);
   },
 };
 
-timer.start(refs.timerRef, timerDeadline)
-refs.startBtn.addEventListener('click', timer.start)
+refs.startBtn.addEventListener('click', ()=> timer.start(refs.timerRef, timerDeadline))
 
 
 
