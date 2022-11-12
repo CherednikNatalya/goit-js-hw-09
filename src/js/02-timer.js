@@ -10,7 +10,7 @@ const refs = {
   timerRef: document.querySelector('.timer'), 
 };
 
-const timerDeadline = null;
+let timerDeadline = null;
 
 const options = {
   enableTime: true,
