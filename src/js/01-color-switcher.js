@@ -15,6 +15,7 @@ function chanceBodyColor () {
        randomHexColor ()  
   }, 1000)
   refs.startBtn.disabled = true;
+  refs.stoptBtn.disabled = false;
 };
 
 function stopChanceColor (){
